@@ -39,8 +39,8 @@ public class Customer {
         this.phone = phone;
     }
 
-    public ArrayList<String> getCustomerCsvData(){
-        ArrayList<String> data = new ArrayList<String>();
+    public List<String> getCustomerCsvData(){
+        List<String> data = new ArrayList<>();
         data.add(name);
         data.add(company);
         data.add(phone);
