@@ -2,19 +2,20 @@ package ru.oleg.korytnikov;
 
 import java.util.*;
 
-public class MyArrayList<T> implements List<T> {
+public final class MyArrayList<T> implements List<T> {
+
+    private final static int DEFAULT_CAPACITY = 10;
+
+
     private Object[] data;
     private int size;
-    private int arrayCapacity;
 
     public MyArrayList() {
-        arrayCapacity = 10;
-        data = new Object[arrayCapacity];
+        data = new Object[DEFAULT_CAPACITY];
     }
 
     public MyArrayList(int capacity) {
-        arrayCapacity = capacity;
-        data = new Object[arrayCapacity];
+        data = new Object[capacity];
     }
 
 
@@ -81,12 +82,12 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public boolean containsAll(Collection<?> c) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     public boolean addAll(Collection<? extends T> c) {
         Object[] incomingArray = c.toArray();
-        int newCapacity = arrayCapacity + incomingArray.length;
+        int newCapacity = data.length + incomingArray.length;
         incrementArray(newCapacity);
         System.arraycopy(incomingArray, 0, data, size, incomingArray.length);
         size += incomingArray.length;
@@ -95,7 +96,7 @@ public class MyArrayList<T> implements List<T> {
 
     public boolean addAll(int index, Collection<? extends T> c) {
         Object[] incomingArray = c.toArray();
-        int newCapacity = arrayCapacity + incomingArray.length;
+        int newCapacity = data.length + incomingArray.length;
         incrementArray(newCapacity);
         if (size - index > 0)
             System.arraycopy(data, index, data, index + incomingArray.length,
@@ -107,15 +108,15 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public boolean removeAll(Collection<?> c) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     public boolean retainAll(Collection<?> c) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     public void clear() {
-        data = new Object[arrayCapacity];
+        data = new Object[data.length];
         size = 0;
     }
 
@@ -132,7 +133,7 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public void add(int index, T element) {
-
+        throw new UnsupportedOperationException();
     }
 
     public T remove(int index) {
@@ -161,20 +162,20 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public ListIterator<T> listIterator() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public ListIterator<T> listIterator(int index) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public List<T> subList(int fromIndex, int toIndex) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     private void incrementArray() {
-        if (arrayCapacity / 2 < size) {
-            arrayCapacity *= 2;
+        if (data.length / 2 < size) {
+            int arrayCapacity = data.length * 2;
             Object[] objects = new Object[arrayCapacity];
             System.arraycopy(data, 0, objects, 0, data.length);
             data = objects;
@@ -190,13 +191,13 @@ public class MyArrayList<T> implements List<T> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Object obj : data){
+        for (Object obj : data) {
             if (obj != null) sb.append(String.valueOf(obj) + ", ");
         }
         return sb.toString();
     }
 
-    public void sort (Comparator<? super T> c){
+    public void sort(Comparator<? super T> c) {
         Arrays.sort(data, 0, size, (Comparator<? super Object>) c);
     }
 
