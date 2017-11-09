@@ -1,0 +1,5 @@
+Listening for transport dt_socket at address: 14025
+1
+java.lang.OutOfMemoryError: Java heap space
+Dumping heap to ./dumps/ ...
+Unable to create ./dumps/: Это каталог
