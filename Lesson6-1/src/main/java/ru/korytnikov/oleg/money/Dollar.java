@@ -3,15 +3,16 @@ package ru.korytnikov.oleg.money;
 public class Dollar implements Money{
 
     private static final String CURRENCY = "DOLLAR";
+    private long currentValue = 0;
 
     @Override
     public String getCurrency() {
-        return null;
+        return CURRENCY;
     }
 
     @Override
     public void addCash(Money money) {
-
+        ;
     }
 
     @Override
