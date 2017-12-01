@@ -11,5 +11,7 @@ public class Test {
         System.out.println("GETTING MONEY");
         atm.getMoney(0,1050);
         atm.checkBalance(0);
+
+        atm.getMoney(1, 100);
     }
 }

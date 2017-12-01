@@ -28,7 +28,7 @@
                         <index>true</index>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>ru.korytnikov.oleg.GCTester</mainClass>
+                            <mainClass>ru.korytnikov.oleg.Test</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

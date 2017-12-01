@@ -34,9 +34,7 @@ public class BankStore {
     }
 
     public boolean getCashFromClientBalance(int id, int sum) throws ClientNotFoundException {
-        if (getClient(id).getCash(sum)) {
-            return true;
-        } else return false;
+        return getClient(id).getCash(sum);
     }
 
 

@@ -50,40 +50,25 @@ public class ATM {
             return;
         }
 
-        try {
-            if (store.getClientBalance(userId) < sum) {
-                System.out.println("Недостаточно средств");
-                return;
-            }
-        } catch (ClientNotFoundException clientNotFound) {
-            System.out.println(clientNotFound.getMessage());
-            return;
-        }
-
         boolean isFinished = false;
 
-        for (int i = nominal.length - 1; i >= 0; i--){
+        for (int i = nominal.length - 1; i >= 0; i--) {
             int curVal = nominal[i];
             int val = ATMCashStorage.get(curVal);
             if (curVal > sum) {
                 continue;
-            }
-            else if (sum % curVal == 0) {
-                if (val >= sum/curVal) {
-                    ATMCashStorage.put(curVal, val - sum/curVal);
-                    System.out.println("Take your money");
+            } else if (sum % curVal == 0) {
+                if (val >= sum / curVal) {
+                    ATMCashStorage.put(curVal, val - sum / curVal);
                     isFinished = true;
                 }
-            }
-            else {
-                for (int j = 1; j < val; j++){
+            } else {
+                for (int j = 1; j < val; j++) {
                     sum -= curVal;
                     if (sum == 0) {
                         ATMCashStorage.put(curVal, val - j);
-                        System.out.println("Take your money");
                         isFinished = true;
-                    }
-                    else if (sum < 0) {
+                    } else if (sum < 0) {
                         ATMCashStorage.put(curVal, val - j + 1);
                         sum += curVal;
                         break;
@@ -92,7 +77,14 @@ public class ATM {
             }
         }
 
-        if(!isFinished) System.out.println("Запрошенная сумма не может быть выдана");
+        if (!isFinished) System.out.println("Запрошенная сумма не может быть выдана");
+        else try {
+            if (store.getCashFromClientBalance(userId, sum)) {
+                System.out.println("Take your money");
+            } else System.out.println("Запрошенная сумма не может быть выдана");
+        } catch (ClientNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
