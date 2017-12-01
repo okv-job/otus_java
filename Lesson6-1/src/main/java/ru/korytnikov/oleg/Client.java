@@ -1,17 +1,30 @@
 package ru.korytnikov.oleg;
 
 public class Client {
-    private long id;
-    private String firstName;
-    private String secondName;
+    private int id;
+    private String name;
+    private int cash;
 
-    public Client(long id, String firstName, String secondName) {
+    public Client(int id, String name, int cash) {
         this.id = id;
-        this.firstName = firstName;
-        this.secondName = secondName;
+        this.name = name;
+        this.cash = cash;
     }
 
-    public long getId() {
-        return id;
+    public void addCash (int sum) {
+        cash += sum;
     }
+
+    public boolean getCash(int sum){
+        if (cash - sum >= 0) {
+            cash -= sum;
+            return true;
+        }
+        return false;
+    }
+
+    public int getCashInformation(){
+        return cash;
+    }
+
 }
