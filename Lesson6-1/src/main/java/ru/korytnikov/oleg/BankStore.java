@@ -47,6 +47,4 @@ public class BankStore {
             return clients.get(id);
         } else throw new ClientNotFoundException();
     }
-
-
 }

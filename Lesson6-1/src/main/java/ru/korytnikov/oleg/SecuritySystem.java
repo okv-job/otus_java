@@ -1,5 +1,7 @@
 package ru.korytnikov.oleg;
 
+import java.util.Map;
+
 public class SecuritySystem {
 
     public static boolean validateUserAccessOrSomethingElse(int userId) {
@@ -7,7 +9,12 @@ public class SecuritySystem {
     }
 
     public static boolean validateCash(int sum) {
-        return sum == 50 || sum == 100 || sum == 500 || sum == 1000;
+        for (Map.Entry<Nominals,Integer> entry: ATM.nominalMap.entrySet()) {
+            if (entry.getValue() == sum) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
