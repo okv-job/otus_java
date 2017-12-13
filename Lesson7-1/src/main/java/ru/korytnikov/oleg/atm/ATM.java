@@ -3,8 +3,8 @@ package ru.korytnikov.oleg.atm;
 import ru.korytnikov.oleg.State;
 import ru.korytnikov.oleg.atm.Errors.ClientNotFoundException;
 import ru.korytnikov.oleg.Nominals;
-import ru.korytnikov.oleg.atmdepartment.Event;
 import ru.korytnikov.oleg.atmdepartment.Observer;
+import ru.korytnikov.oleg.atmdepartment.events.Event;
 
 import java.util.*;
 import java.util.stream.IntStream;
@@ -147,25 +147,20 @@ public class ATM implements Observer {
         return null;
     }
 
+    public void setInitialState(){
+        ATMCashStorage = new HashMap<>(getLastState());
+        System.out.println("Done");
+    }
+
+    public void setInitialState(State state){
+        states.add(new Memento(state));
+        ATMCashStorage = new HashMap<>(getLastState());
+        System.out.println("Done");
+    }
+
     @Override
     public void notify(Event event) {
-        switch (event.getEvent()) {
-            case getBalance:
-                getATMCash();
-                break;
-            case setInitialState: {
-                if (event.getState() == null) {
-                    ATMCashStorage = new HashMap<>(getLastState());
-                    System.out.println("Done");
-                    break;
-
-                }
-                states.add(new Memento(event.getState()));
-                ATMCashStorage = new HashMap<>(getLastState());
-                System.out.println("Done");
-                break;
-            }
-        }
+        event.execute(this);
     }
 
     private Map<Nominals,Integer> getLastState(){

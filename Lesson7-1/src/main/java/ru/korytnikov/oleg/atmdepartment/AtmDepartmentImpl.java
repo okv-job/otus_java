@@ -2,6 +2,8 @@ package ru.korytnikov.oleg.atmdepartment;
 
 import ru.korytnikov.oleg.State;
 import ru.korytnikov.oleg.atm.ATM;
+import ru.korytnikov.oleg.atmdepartment.events.GetBalanceEvent;
+import ru.korytnikov.oleg.atmdepartment.events.SetInitialStateEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,22 +13,22 @@ public class AtmDepartmentImpl implements AtmDepartment {
 
     @Override
     public void getBalanceFromAllAtm() {
-        observers.forEach(observer -> observer.notify(new Event(Events.getBalance)));
+        observers.forEach(observer -> observer.notify(new GetBalanceEvent()));
     }
 
     @Override
     public void getBalanceFromAtm(ATM atm) {
-        atm.notify(new Event(Events.getBalance));
+        atm.notify(new GetBalanceEvent());
     }
 
     @Override
     public void setInitialState(State state) {
-        observers.forEach(observer -> observer.notify(new Event(Events.setInitialState, state)));
+        observers.forEach(observer -> observer.notify(new SetInitialStateEvent(state)));
     }
 
     @Override
     public void setInitialState() {
-        observers.forEach(observer -> observer.notify(new Event(Events.setInitialState, null)));
+        observers.forEach(observer -> observer.notify(new SetInitialStateEvent()));
     }
 
 
