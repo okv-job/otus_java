@@ -1,10 +1,14 @@
 package ru.korytnikov.oleg;
 
+import ru.korytnikov.oleg.annotations.After;
+import ru.korytnikov.oleg.annotations.Before;
+import ru.korytnikov.oleg.annotations.Test;
+
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -63,23 +67,49 @@ class ReflectionHelper {
         }
     }
 
-    static Object callMethod(Object object, String name, Object... args) {
+    static Boolean callMethod(Object object, String name, Object... args) {
         Method method = null;
         boolean isAccessible = true;
         try {
             method = object.getClass().getDeclaredMethod(name, toClasses(args));
             isAccessible = method.isAccessible();
             method.setAccessible(true);
-            return method.invoke(object, args);
+            method.invoke(object, args);
+            return true;
         } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            e.printStackTrace();
+            System.out.println(e.getCause());
+            return false;
         } finally {
             if (method != null && !isAccessible) {
                 method.setAccessible(false);
             }
         }
-        return null;
     }
+
+    static Map<String, List<Method>> getMethods(Object object) {
+        Method[] methods = object.getClass().getDeclaredMethods();
+        Map<String, List<Method>> result = new HashMap<>();
+        result.put("before", new ArrayList<>());
+        result.put("test", new ArrayList<>());
+        result.put("after", new ArrayList<>());
+        for (Method method : methods) {
+            Annotation[] annotations = method.getDeclaredAnnotations();
+            for (Annotation annotation : annotations) {
+                if (annotation instanceof Before) {
+                    result.get("before").add(method);
+                }
+                if (annotation instanceof Test) {
+                    Test test = method.getAnnotation(Test.class);
+                    if (test.enabled()) result.get("test").add(method);
+                }
+                if (annotation instanceof After) {
+                    result.get("after").add(method);
+                }
+            }
+        }
+        return result;
+    }
+
 
     static private Class<?>[] toClasses(Object[] args) {
         List<Class<?>> classes = Arrays.stream(args)
