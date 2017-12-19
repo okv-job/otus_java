@@ -2,6 +2,7 @@ package ru.korytnikov.oleg.test;
 
 import ru.korytnikov.oleg.annotations.After;
 import ru.korytnikov.oleg.annotations.Before;
+import ru.korytnikov.oleg.asserts.Asserts;
 
 public class Test2 {
 
@@ -14,9 +15,8 @@ public class Test2 {
 
     @ru.korytnikov.oleg.annotations.Test
     public void a2Check(){
-        if (a == 0){
-            throw new RuntimeException();
-        }
+        Asserts.assertEquals(1,1);
+        Asserts.assertEquals("Oleg", "Oleg");
     }
 
     @After
