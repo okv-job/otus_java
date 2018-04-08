@@ -15,7 +15,7 @@ public class DbConnector {
                     "3306/" +
                     "Test?" +
                     "user=root&" +
-                    "password=Rjhsnybrjd10&" +
+                    "password=1234&" +
                     "useSSL=false&" + "useLegacyDatetimeCode=false&serverTimezone=UTC";
             return DriverManager.getConnection(url);
         } catch (SQLException e) {
