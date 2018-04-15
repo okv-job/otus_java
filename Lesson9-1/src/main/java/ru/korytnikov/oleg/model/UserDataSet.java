@@ -1,9 +1,19 @@
 package ru.korytnikov.oleg.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class UserDataSet extends DataSet {
 
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "age")
     private int age;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private AddressDataSet address;
 
     public UserDataSet() {
     }
@@ -17,6 +27,18 @@ public class UserDataSet extends DataSet {
         this.name = name;
         this.age = age;
         super.setId(id);
+    }
+
+    public UserDataSet(String name, int age, String address) {
+        this.name = name;
+        this.age = age;
+        this.address = new AddressDataSet(address);
+    }
+
+    public UserDataSet(String name, int age, AddressDataSet address) {
+        this.name = name;
+        this.age = age;
+        this.address = address;
     }
 
     public String getName() {
@@ -35,11 +57,20 @@ public class UserDataSet extends DataSet {
         this.age = age;
     }
 
+    public AddressDataSet getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressDataSet address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "UserDataSet{" +
                 "name='" + name + '\'' +
                 ", age=" + age +
+                ", address=" + address +
                 '}';
     }
 }

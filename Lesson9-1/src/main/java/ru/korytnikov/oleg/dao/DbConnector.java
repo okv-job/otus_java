@@ -8,14 +8,15 @@ public class DbConnector {
 
     public static Connection getConnection() {
         try {
-            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 
             String url = "jdbc:mysql://" +
                     "localhost:" +
                     "3306/" +
                     "Test?" +
                     "user=root&" +
-                    "password=1234&" +
+                    "password=Rjhsnybrjd10&" +
                     "useSSL=false&" + "useLegacyDatetimeCode=false&serverTimezone=UTC";
             return DriverManager.getConnection(url);
         } catch (SQLException e) {

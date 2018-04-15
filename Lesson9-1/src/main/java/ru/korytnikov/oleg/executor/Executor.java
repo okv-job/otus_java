@@ -2,10 +2,7 @@ package ru.korytnikov.oleg.executor;
 
 import ru.korytnikov.oleg.dao.DbConnector;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Executor {
 
@@ -16,14 +13,14 @@ public class Executor {
     }
 
     public int execUpdate(String update) throws SQLException {
-        try (Statement stmt = connection.createStatement()) {
-            stmt.execute(update);
+        try (PreparedStatement stmt = connection.prepareStatement(update)) {
+            stmt.execute();
             return stmt.getUpdateCount();
         }
     }
 
     public <T> T execQuery(String query, ExecutorHandler<T> handler) throws SQLException, InstantiationException {
-        Statement stmt = connection.createStatement();
+        PreparedStatement stmt = connection.prepareStatement(query);
         stmt.execute(query);
         ResultSet result = stmt.getResultSet();
         T value = handler.handle(result);
