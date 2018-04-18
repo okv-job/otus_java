@@ -1,5 +1,6 @@
-package ru.korytnikov.oleg.dao;
+package ru.korytnikov.oleg.dao.orm;
 
+import ru.korytnikov.oleg.dao.DBService;
 import ru.korytnikov.oleg.executor.Executor;
 import ru.korytnikov.oleg.model.DataSet;
 
@@ -8,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbService implements Service {
+public class MysqlDbService implements DBService {
 
 
     private List<Option> getOptions(Field[] fields, Object obj) {
@@ -120,5 +121,14 @@ public class DbService implements Service {
             e.printStackTrace();
         }
         return obj;
+    }
+
+    @Override
+    public void shutdown() {
+        try {
+            DbConnector.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

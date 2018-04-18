@@ -1,6 +1,6 @@
 package ru.korytnikov.oleg.executor;
 
-import ru.korytnikov.oleg.dao.DbConnector;
+import ru.korytnikov.oleg.dao.orm.DbConnector;
 
 import java.sql.*;
 

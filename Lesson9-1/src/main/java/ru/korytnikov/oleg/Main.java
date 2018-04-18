@@ -1,7 +1,7 @@
 package ru.korytnikov.oleg;
 
 import ru.korytnikov.oleg.dao.DBService;
-import ru.korytnikov.oleg.dao.DBServiceHybernateImpl;
+import ru.korytnikov.oleg.dao.hibernate.DBServiceHybernateImpl;
 import ru.korytnikov.oleg.model.UserDataSet;
 
 public class Main {

@@ -1,4 +1,4 @@
-package ru.korytnikov.oleg.dao;
+package ru.korytnikov.oleg.dao.orm;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

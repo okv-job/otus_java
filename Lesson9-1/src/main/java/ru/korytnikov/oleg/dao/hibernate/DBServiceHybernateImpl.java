@@ -1,4 +1,4 @@
-package ru.korytnikov.oleg.dao;
+package ru.korytnikov.oleg.dao.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -6,13 +6,14 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import ru.korytnikov.oleg.dao.DBService;
 import ru.korytnikov.oleg.model.AddressDataSet;
 import ru.korytnikov.oleg.model.DataSet;
 import ru.korytnikov.oleg.model.UserDataSet;
 
 import java.util.function.Function;
 
-public class DBServiceHybernateImpl implements DBService{
+public class DBServiceHybernateImpl implements DBService {
 
     private final SessionFactory sessionFactory;
 
@@ -26,7 +27,7 @@ public class DBServiceHybernateImpl implements DBService{
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
         configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/Test");
         configuration.setProperty("hibernate.connection.username", "root");
-        configuration.setProperty("hibernate.connection.password", "root");
+        configuration.setProperty("hibernate.connection.password", "Rjhsnybrjd10");
         configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "create");
         configuration.setProperty("hibernate.connection.useSSL", "false");

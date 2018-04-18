@@ -30,7 +30,7 @@
 
 
     <build>
-        <finalName>ATM</finalName>
+        <finalName>hibernate</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -43,7 +43,7 @@
                         <index>true</index>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>ru.korytnikov.oleg.Test</mainClass>
+                            <mainClass>ru.korytnikov.oleg.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

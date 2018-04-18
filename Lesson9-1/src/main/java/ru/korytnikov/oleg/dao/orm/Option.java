@@ -1,4 +1,4 @@
-package ru.korytnikov.oleg.dao;
+package ru.korytnikov.oleg.dao.orm;
 
 public class Option {
     private Object type;
