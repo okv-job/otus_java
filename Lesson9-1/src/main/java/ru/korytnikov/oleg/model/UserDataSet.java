@@ -35,6 +35,13 @@ public class UserDataSet extends DataSet {
         this.address = new AddressDataSet(address);
     }
 
+    public UserDataSet(String name, int age, String address, long id) {
+        super.setId(id);
+        this.name = name;
+        this.age = age;
+        this.address = new AddressDataSet(address);
+    }
+
     public UserDataSet(String name, int age, AddressDataSet address) {
         this.name = name;
         this.age = age;
