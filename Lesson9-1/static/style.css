@@ -1,0 +1,24 @@
+body, html {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background: cornflowerblue;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.btn {
+    padding: 7px 5px;
+    border-radius: 4px;
+    font-size: 1.2em;
+    border: none;
+    outline: none;
+    background: #116bff;
+    margin-bottom: 20px;
+}

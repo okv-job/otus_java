@@ -12,6 +12,7 @@ import ru.korytnikov.oleg.dao.DBService;
 import ru.korytnikov.oleg.model.AddressDataSet;
 import ru.korytnikov.oleg.model.DataSet;
 import ru.korytnikov.oleg.model.UserDataSet;
+import ru.korytnikov.oleg.webserver.model.StatusInfo;
 
 import java.util.function.Function;
 
@@ -30,7 +31,7 @@ public class DBServiceHybernateImpl implements DBService {
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
         configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/Test");
         configuration.setProperty("hibernate.connection.username", "root");
-        configuration.setProperty("hibernate.connection.password", "12345");
+        configuration.setProperty("hibernate.connection.password", "Rjhsnybrjd10");
         configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "create");
         configuration.setProperty("hibernate.connection.useSSL", "false");
@@ -38,6 +39,27 @@ public class DBServiceHybernateImpl implements DBService {
 
         sessionFactory = createSessionFactory(configuration);
         cacheEngine = new CacheEngineImpl<>(10, 0, 0, true);
+    }
+
+    public DBServiceHybernateImpl(StatusInfo statusInfo) {
+        Configuration configuration = new Configuration();
+
+        configuration.addAnnotatedClass(UserDataSet.class);
+        configuration.addAnnotatedClass(AddressDataSet.class);
+
+        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/Test");
+        configuration.setProperty("hibernate.connection.username", "root");
+        configuration.setProperty("hibernate.connection.password", "12345");
+        configuration.setProperty("hibernate.show_sql", "true");
+        configuration.setProperty("hibernate.hbm2ddl.auto", "create");
+        configuration.setProperty("hibernate.connection.useSSL", "false");
+        configuration.setProperty("hibernate.enable_lazy_load_no_trans", "true");
+
+        sessionFactory = createSessionFactory(configuration);
+        cacheEngine = new CacheEngineImpl<>(statusInfo.getMaxElements(),
+                statusInfo.getLifeTimeMs(), statusInfo.getIdleTimeMs(), statusInfo.isIternal());
     }
 
     public DBServiceHybernateImpl(Configuration configuration) {
@@ -68,30 +90,35 @@ public class DBServiceHybernateImpl implements DBService {
     @Override
     public <T extends DataSet> void save(T dataSet) {
         runInSession(session -> {
-            if (dataSet.getId() != 0) {
-                cacheEngine.put(new MyElement<>(dataSet.getId(), dataSet));
-            }
             session.save(dataSet);
+            if (dataSet.getId() != 0) {
+                cacheEngine.put(dataSet.getId(), dataSet);
+            }
             return dataSet;
         });
     }
 
     @Override
     public <T extends DataSet> T load(long id, Class<T> clazz) {
-        try (Session session = sessionFactory.openSession()) {
-            T dataSet;
-            MyElement<Long, DataSet> element = cacheEngine.get(id);
-            if (element == null) {
+        T dataSet = (T) cacheEngine.get(id);
+        if (dataSet == null) {
+            try (Session session = sessionFactory.openSession()) {
                 dataSet = session.load(clazz, id);
-                cacheEngine.put(new MyElement<>(id, dataSet));
-                return dataSet;
+                cacheEngine.put(id, dataSet);
             }
-            dataSet = (T) element.getValue();
-            return dataSet;
         }
+        return dataSet;
     }
 
     public CacheEngineImpl<Long, DataSet> getCacheEngine() {
         return cacheEngine;
+    }
+
+    public int getHits() {
+        return cacheEngine.getHitCount();
+    }
+
+    public int getMiss() {
+        return cacheEngine.getMissCount();
     }
 }

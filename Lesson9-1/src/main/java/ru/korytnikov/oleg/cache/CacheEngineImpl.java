@@ -29,13 +29,13 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
     }
 
     @Override
-    public void put(MyElement<K, V> element) {
+    public void put(K key, V value) {
+        MyElement<K, V> element = new MyElement<>(key, value);
         if (elements.size() == maxElements) {
             K firstKey = elements.keySet().iterator().next();
             elements.remove(firstKey);
         }
 
-        K key = element.getKey();
         elements.put(key, new SoftReference<>(element));
 
         if (!isEternal) {
@@ -51,12 +51,12 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
     }
 
     @Override
-    public MyElement<K, V> get(K key) {
+    public V get(K key) {
         SoftReference<MyElement<K, V>> element = elements.get(key);
         if (element != null) {
             hit++;
             element.get().setAccessed();
-            return element.get();
+            return element.get().getValue();
         } else {
             miss++;
         }
