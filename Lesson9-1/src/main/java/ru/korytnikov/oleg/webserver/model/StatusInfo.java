@@ -1,40 +1,19 @@
 package ru.korytnikov.oleg.webserver.model;
 
 public class StatusInfo {
-    private boolean result = true;
-    private int maxElements;
-    private long lifeTimeMs;
-    private long idleTimeMs;
-    private boolean isIternal;
+
     private int hitCount;
     private int missCount;
+    private CacheConfig cacheConfig;
+    private boolean result = true;
 
     public StatusInfo() {
     }
 
-    public StatusInfo(int maxElements, long lifeTimeMs, long idleTimeMs) {
-        this.maxElements = maxElements;
-        this.lifeTimeMs = lifeTimeMs;
-        this.idleTimeMs = idleTimeMs;
-    }
-
-    public StatusInfo(int maxElements, boolean isIternal) {
-        this.maxElements = maxElements;
-        this.lifeTimeMs = 0;
-        this.idleTimeMs = 0;
-        this.isIternal = isIternal;
-    }
-
-    @Override
-    public String toString() {
-        return "StatusInfo{" +
-                "maxElements=" + maxElements +
-                ", lifeTimeMs=" + lifeTimeMs +
-                ", idleTimeMs=" + idleTimeMs +
-                ", isIternal=" + isIternal +
-                ", hitCount=" + hitCount +
-                ", missCount=" + missCount +
-                '}';
+    public StatusInfo(int hitCount, int missCount, CacheConfig cacheConfig) {
+        this.hitCount = hitCount;
+        this.missCount = missCount;
+        this.cacheConfig = cacheConfig;
     }
 
     public int getHitCount() {
@@ -53,36 +32,29 @@ public class StatusInfo {
         this.missCount = missCount;
     }
 
-    public int getMaxElements() {
-        return maxElements;
+    public CacheConfig getCacheConfig() {
+        return cacheConfig;
     }
 
-    public void setMaxElements(int maxElements) {
-        this.maxElements = maxElements;
+    public void setCacheConfig(CacheConfig cacheConfig) {
+        this.cacheConfig = cacheConfig;
     }
 
-    public long getLifeTimeMs() {
-        return lifeTimeMs;
+    public boolean isResult() {
+        return result;
     }
 
-    public void setLifeTimeMs(long lifeTimeMs) {
-        this.lifeTimeMs = lifeTimeMs;
+    public void setResult(boolean result) {
+        this.result = result;
     }
 
-    public long getIdleTimeMs() {
-        return idleTimeMs;
+    @Override
+    public String toString() {
+        return "StatusInfo{" +
+                "hitCount=" + hitCount +
+                ", missCount=" + missCount +
+                ", cacheConfig=" + cacheConfig +
+                ", result=" + result +
+                '}';
     }
-
-    public void setIdleTimeMs(long idleTimeMs) {
-        this.idleTimeMs = idleTimeMs;
-    }
-
-    public boolean isIternal() {
-        return isIternal;
-    }
-
-    public void setIternal(boolean iternal) {
-        isIternal = iternal;
-    }
-
 }

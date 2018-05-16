@@ -7,12 +7,11 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import ru.korytnikov.oleg.cache.CacheEngineImpl;
-import ru.korytnikov.oleg.cache.MyElement;
 import ru.korytnikov.oleg.dao.DBService;
 import ru.korytnikov.oleg.model.AddressDataSet;
 import ru.korytnikov.oleg.model.DataSet;
 import ru.korytnikov.oleg.model.UserDataSet;
-import ru.korytnikov.oleg.webserver.model.StatusInfo;
+import ru.korytnikov.oleg.webserver.model.CacheConfig;
 
 import java.util.function.Function;
 
@@ -20,6 +19,7 @@ public class DBServiceHybernateImpl implements DBService {
 
     private final SessionFactory sessionFactory;
     private CacheEngineImpl<Long, DataSet> cacheEngine;
+    private CacheConfig cacheConfig;
 
     public DBServiceHybernateImpl() {
         Configuration configuration = new Configuration();
@@ -31,7 +31,7 @@ public class DBServiceHybernateImpl implements DBService {
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
         configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/Test");
         configuration.setProperty("hibernate.connection.username", "root");
-        configuration.setProperty("hibernate.connection.password", "Rjhsnybrjd10");
+        configuration.setProperty("hibernate.connection.password", "1234");
         configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "create");
         configuration.setProperty("hibernate.connection.useSSL", "false");
@@ -41,7 +41,7 @@ public class DBServiceHybernateImpl implements DBService {
         cacheEngine = new CacheEngineImpl<>(10, 0, 0, true);
     }
 
-    public DBServiceHybernateImpl(StatusInfo statusInfo) {
+    public DBServiceHybernateImpl(CacheConfig cacheConfig) {
         Configuration configuration = new Configuration();
 
         configuration.addAnnotatedClass(UserDataSet.class);
@@ -51,15 +51,17 @@ public class DBServiceHybernateImpl implements DBService {
         configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
         configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/Test");
         configuration.setProperty("hibernate.connection.username", "root");
-        configuration.setProperty("hibernate.connection.password", "12345");
+        configuration.setProperty("hibernate.connection.password", "1234");
         configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "create");
         configuration.setProperty("hibernate.connection.useSSL", "false");
         configuration.setProperty("hibernate.enable_lazy_load_no_trans", "true");
 
+        this.cacheConfig = cacheConfig;
+
         sessionFactory = createSessionFactory(configuration);
-        cacheEngine = new CacheEngineImpl<>(statusInfo.getMaxElements(),
-                statusInfo.getLifeTimeMs(), statusInfo.getIdleTimeMs(), statusInfo.isIternal());
+        cacheEngine = new CacheEngineImpl<>(cacheConfig.getMaxElements(),
+                cacheConfig.getLifeTimeMs(), cacheConfig.getIdleTimeMs(), cacheConfig.isIternal());
     }
 
     public DBServiceHybernateImpl(Configuration configuration) {
@@ -120,5 +122,9 @@ public class DBServiceHybernateImpl implements DBService {
 
     public int getMiss() {
         return cacheEngine.getMissCount();
+    }
+
+    public CacheConfig getCacheConfig() {
+        return cacheConfig;
     }
 }

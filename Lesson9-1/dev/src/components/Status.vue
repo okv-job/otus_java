@@ -1,12 +1,12 @@
 <template>
   <div class="status-container">
     <h1>status</h1>
-    <div class="status-container-data">
+    <div class="status-container-data" v-if="isLoaded">
         <div>
-            <span>IdleTime: {{status.idleTimeMs}}</span>
-            <span>lifeTimeMs: {{status.lifeTimeMs}}</span>
-            <span>maxElements: {{status.maxElements}}</span>
-            <span>isIternal: {{status.isIternal}}</span>
+            <span>IdleTime: {{status.cacheConfig.idleTimeMs}}</span>
+            <span>lifeTimeMs: {{status.cacheConfig.lifeTimeMs}}</span>
+            <span>maxElements: {{status.cacheConfig.maxElements}}</span>
+            <span>isIternal: {{status.cacheConfig.isIternal}}</span>
         </div>
         <div>
             <span>hitCount: {{status.hitCount}}</span>
@@ -25,9 +25,16 @@ export default {
   computed: {
     ...mapState(["status"])
   },
+  data() {
+    return {
+      isLoaded: false
+    };
+  },
   mounted() {
+    let that = this;
     this.$store.dispatch("getStatus").then(res => {
       if (!res) this.$router.push("/");
+      that.isLoaded = true;
     });
   },
   methods: {
