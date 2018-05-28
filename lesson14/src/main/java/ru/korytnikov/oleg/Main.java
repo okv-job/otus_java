@@ -8,9 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        List<Integer> unsortedArray = getUnsortedArray(100);
-        ThreadSortUtil threadSortUtil = new ThreadSortUtil();
-
+        List<Integer> unsortedArray = getUnsortedArray(10000);
         try {
             System.out.println(ThreadSortUtil.getSortedArray(unsortedArray, 5));
         } catch (InterruptedException e) {

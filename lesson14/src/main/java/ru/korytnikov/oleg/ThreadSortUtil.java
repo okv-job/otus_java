@@ -13,7 +13,7 @@ public class ThreadSortUtil {
         int workers = unsortedArray.size() >= threadWorkersCount ? threadWorkersCount : unsortedArray.size() / 2;
 
         if (workers == 0) {
-            sortedArray = new ArrayList<Integer>(unsortedArray);
+            sortedArray = new ArrayList<>(unsortedArray);
             Collections.sort(sortedArray);
         } else {
             int arraySizePerWorker = unsortedArray.size() / workers;
@@ -23,7 +23,6 @@ public class ThreadSortUtil {
 
             while (sortedCapacity <= unsortedArray.size()) {
                 List<Integer> unsortedPartOfArray;
-
                 if (sortedCapacity + arraySizePerWorker > unsortedArray.size()) {
                     unsortedPartOfArray = unsortedArray.subList(sortedCapacity, unsortedArray.size());
                 } else {
@@ -35,7 +34,6 @@ public class ThreadSortUtil {
                 thread.join();
 
                 sortedArrays.add(unsortedPartOfArray);
-
                 sortedCapacity += arraySizePerWorker;
             }
 
@@ -60,7 +58,6 @@ public class ThreadSortUtil {
                 resultArray = merge(resultArray, it.next());
             }
         }
-
         resultArray = resultArray == null ? firstArr : resultArray;
 
         return resultArray;
@@ -73,26 +70,25 @@ public class ThreadSortUtil {
         int i=0, j=0;
         for (int k=0; k<first.size() + second.size(); k++) {
 
+            int a;
             if (i > first.size()-1) {
-                int a = second.get(j);
-                result.add(a);
+                a = second.get(j);
                 j++;
             }
             else if (j > second.size()-1) {
-                int a = first.get(i);
-                result.add(a);
+                a = first.get(i);
                 i++;
             }
             else if (first.get(i) < second.get(j)) {
-                int a = first.get(i);
-                result.add(a);
+                a = first.get(i);
                 i++;
             }
             else {
-                int b = second.get(j);
-                result.add(b);
+                a = second.get(j);
                 j++;
             }
+
+            result.add(a);
         }
 
         return result;
