@@ -7,10 +7,11 @@ import java.util.List;
 
 public class ThreadSortUtil {
 
-    public static List<Integer> getSortedArray(final List<Integer> unsortedArray, int threadWorkersCount) throws InterruptedException {
+    public static List<Integer> getSortedList(final List<Integer> unsortedArray, int threadWorkersCount) throws InterruptedException {
         List<Integer> sortedArray;
 
         int workers = unsortedArray.size() >= threadWorkersCount ? threadWorkersCount : unsortedArray.size() / 2;
+        List<Thread> threads = new ArrayList<>();
 
         if (workers == 0) {
             sortedArray = new ArrayList<>(unsortedArray);
@@ -29,22 +30,32 @@ public class ThreadSortUtil {
                     unsortedPartOfArray = unsortedArray.subList(sortedCapacity, sortedCapacity + arraySizePerWorker);
                 }
 
-                Thread thread = new Thread( () -> Collections.sort(unsortedPartOfArray));
-                thread.start();
-                thread.join();
+                threads.add(new Thread( () -> Collections.sort(unsortedPartOfArray)));
 
                 sortedArrays.add(unsortedPartOfArray);
                 sortedCapacity += arraySizePerWorker;
             }
 
-            sortedArray = sortAllArray(sortedArrays);
+            runThreads(threads);
+            sortedArray = sortAllLists(sortedArrays);
 
         }
 
         return sortedArray;
     }
 
-    private static List<Integer> sortAllArray(List<List<Integer>> sortedPartsOfArray) {
+    private static void runThreads(List<Thread> threads) {
+        threads.forEach(Thread::start);
+        threads.forEach(thread -> {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private static List<Integer> sortAllLists(List<List<Integer>> sortedPartsOfArray) {
         List<Integer> resultArray = null;
         Iterator<List<Integer>> it = sortedPartsOfArray.iterator();
         List<Integer> firstArr = null;
